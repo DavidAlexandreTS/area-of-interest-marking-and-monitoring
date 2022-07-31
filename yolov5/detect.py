@@ -145,7 +145,7 @@ def run(
     else:
         web_flag = 0
         # To draw a polygon
-        poly_points = [[549, 317], [465, 398], [600, 476], [710, 426], [549, 317]]
+        poly_points = [[549, 317], [465, 398], [600, 476], [710, 426]]
         dataset = LoadImages(source, img_size=imgsz, stride=stride, auto=pt)
         bs = 1  # batch_size
     vid_path, vid_writer = [None] * bs, [None] * bs
@@ -223,7 +223,14 @@ def run(
                             polygon = [np.int32(points)]
                             points = []
 
-                        cv2.setMouseCallback(str(p), left_click_detect, points)
+                        a = str(p)
+
+                        b = a.replace("\\", "\\\ ")
+                        b = b.replace(" ", "")
+
+                        cv2.setMouseCallback(str(b), left_click_detect, points)
+
+
 
                         if (flag == 1):
                             isOnPolly = polygon_ray_casting_algorithm(polygon_save, teste)
@@ -281,6 +288,7 @@ def run(
                             w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
                             h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
                         else:  # stream
+                            print("Nome da janela da stream?")
                             fps, w, h = 30, im0.shape[1], im0.shape[0]
                         save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
                         vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
